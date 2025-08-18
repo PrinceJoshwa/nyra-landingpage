@@ -66,8 +66,8 @@ export default function Footer() {
           <div>
             <h4 className="font-bold text-lg sm:text-xl mb-6 sm:mb-8 tracking-tight text-orange-400">Contact Info</h4>
             <div className="space-y-3 sm:space-y-4 text-slate-300 text-sm sm:text-base">
-              <div className="font-medium hover:text-orange-400 transition-colors">+91 7022 433 001</div>
               <div className="font-medium hover:text-orange-400 transition-colors">+91 7760 777 992</div>
+              <div className="font-medium hover:text-orange-400 transition-colors">+91 7090 407 090</div>
               <div className="font-medium hover:text-orange-400 transition-colors">www.nyrasunterra.com</div>
               <div className="font-medium hover:text-orange-400 transition-colors">info@nyrasunterra.com</div>
             </div>
@@ -91,6 +91,29 @@ export default function Footer() {
             </div>
           </div>
         </div>
+<div className="border-t border-slate-700/50 py-2 sm:py-3">
+  <div className="flex justify-end">
+    <div className="flex flex-col items-start max-w-xs">
+      {/* Heading aligned to card start */}
+      <h3 className="text-lg font-bold text-white mb-2">
+        Marketing Partner
+      </h3>
+
+      {/* Card */}
+      <div className="bg-white/10 backdrop-blur-xl rounded-xl p-3 border border-white/20 hover:bg-white/15 transition-all duration-300 w-full text-center">
+        <img
+          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/marketly.jpg-94neXTeblJa0erHKRPtdZjHIclIscG.jpeg"
+          alt="Marketly - Your Marketing Partner"
+          className="h-12 w-auto mx-auto mb-2 object-contain"
+        />
+        <p className="text-slate-300 text-xs">
+          Powered by professional marketing excellence
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
 
         {/* Bottom Section */}
         <div className="border-t border-slate-700 pt-8 sm:pt-12 text-center">

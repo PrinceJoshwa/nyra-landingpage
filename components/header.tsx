@@ -63,7 +63,7 @@
 //                 <Phone className="h-4 w-4 text-orange-600" />
 //               </div>
 //               <div className="text-right">
-//                 <div className="font-bold text-slate-900 text-sm">+91 7022 433 001</div>
+//                 <div className="font-bold text-slate-900 text-sm">+91 7760 777 992</div>
 //                 <div className="text-xs text-orange-600 font-medium">Call Now</div>
 //               </div>
 //             </div>
@@ -107,7 +107,7 @@
 //                 <div className="flex items-center space-x-3 bg-gradient-to-r from-orange-50 to-red-50 px-4 py-3 rounded-2xl border border-orange-200">
 //                   <Phone className="h-4 w-4 text-orange-600" />
 //                   <div>
-//                     <div className="font-bold text-slate-900 text-sm">+91 7022 433 001</div>
+//                     <div className="font-bold text-slate-900 text-sm">+91 7760 777 992</div>
 //                     <div className="text-xs text-orange-600">Call for best prices</div>
 //                   </div>
 //                 </div>
@@ -186,8 +186,9 @@ export default function Header() {
                 <Phone className="h-3 w-3 text-orange-600" />
               </div>
               <div className="text-right">
-                <div className="font-bold text-slate-900 text-xs leading-tight">+91 7022 433 001</div>
+                {/* <div className="font-bold text-slate-900 text-xs leading-tight">+91 7760 777 992</div> */}
                 <div className="font-bold text-slate-900 text-xs leading-tight">+91 7760 777 992</div>
+                <div className="font-bold text-slate-900 text-xs leading-tight">+91 7090 407 090</div>
               </div>
             </div>
 
@@ -230,8 +231,8 @@ export default function Header() {
                 <div className="flex items-center space-x-3 bg-gradient-to-r from-orange-50 to-red-50 px-4 py-3 rounded-xl border border-orange-200">
                   <Phone className="h-4 w-4 text-orange-600" />
                   <div>
-                    <div className="font-bold text-slate-900 text-sm">+91 7022 433 001</div>
                     <div className="font-bold text-slate-900 text-sm">+91 7760 777 992</div>
+                    <div className="font-bold text-slate-900 text-sm">+91 7090 407 090</div>
                   </div>
                 </div>
               </div>
