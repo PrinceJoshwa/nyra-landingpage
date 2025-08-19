@@ -443,6 +443,7 @@ import { useState } from "react"
 import Link from "next/link"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
+import WhatsAppChat from "@/components/WhatsAppChat"
 
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -535,13 +536,13 @@ export default function ContactPage() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(251,146,60,0.1),transparent_50%)]"></div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="max-w-4xl mx-auto text-center">
-            <Link
+            {/* <Link
               href="/"
               className="inline-flex items-center text-orange-600 hover:text-orange-700 font-medium mb-6 sm:mb-8 transition-colors"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Home
-            </Link>
+            </Link> */}
 
             <Badge className="bg-orange-100 text-orange-800 border border-orange-200 mb-6 sm:mb-8 px-4 sm:px-6 py-2 sm:py-3 rounded-full font-medium">
               Contact Us
@@ -864,6 +865,7 @@ export default function ContactPage() {
       </section>
 
       <Footer />
+      <WhatsAppChat />
     </div>
   )
 }
