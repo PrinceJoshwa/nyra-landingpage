@@ -15,7 +15,7 @@ const WhatsAppChat: React.FC = () => {
 
     const phoneNumber: string = "+917090407090"; // Replace with your actual WhatsApp number
     const message: string = encodeURIComponent(
-        "Hi, I'm interested in Buying Property. Can you help me?"
+        "Hello, I need more information about the property."
     );
 
     const toggleChat = (): void => setIsOpen((prev) => !prev);
@@ -61,7 +61,7 @@ const WhatsAppChat: React.FC = () => {
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
-                        className="fixed bottom-20 right-4 bg-white p-4 rounded-full shadow-xl z-50 w-70"
+                        className="fixed bottom-20 right-4 bg-white p-4 rounded-lg shadow-xl z-50 w-72"
                         initial={{ opacity: 0, y: 50, scale: 0.3 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
