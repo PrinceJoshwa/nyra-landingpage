@@ -38,8 +38,8 @@ import Script from "next/script"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "NYRA SUNTERA",
-  description: "Nyra Suntera",
+  title: "Nyra sunterra - SBI approved 5BHK villa at Sarjapura",
+  description: "Nyra sunterra - SBI approved 5BHK villa at Sarjapura",
 }
 
 export default function RootLayout({

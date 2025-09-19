@@ -33,6 +33,7 @@ import {
   Download,
   Loader2,
   X,
+  IndianRupee,
 } from "lucide-react"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
@@ -387,19 +388,20 @@ export default function LandingPage() {
               <div className="space-y-6 sm:space-y-8">
                 <div className="flex flex-wrap items-center gap-3 sm:gap-4">
                   <Badge className="bg-gradient-to-r from-orange-50 to-red-50 text-orange-800 border border-orange-200/50 px-4 sm:px-6 py-2 sm:py-3 rounded-full font-medium text-xs sm:text-sm">
-                    <Sun className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
-                    100% Solar Powered Living
+                    RERA Approved | Home Loan Assistance | Limited Launch Offer
                   </Badge>
-                  <Badge className="bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-800 border border-blue-200/50 px-4 sm:px-6 py-2 sm:py-3 rounded-full font-medium text-xs sm:text-sm">
-                    <Shield className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
-                    RERA Approved
+                  <Badge className="bg-gradient-to-r from-green-50 to-emerald-50 text-green-800 border border-green-200/50 px-4 sm:px-6 py-2 sm:py-3 rounded-full font-medium text-xs sm:text-sm">
+                    No Pre-EMI till possession
                   </Badge>
                 </div>
                 <div className="space-y-4 sm:space-y-6">
                   <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-slate-900 leading-[0.9] tracking-tight">
-                    5BHK villa's in sarjapura
-                    <span className="text-5xl block text-transparent bg-clip-text bg-gradient-to-r from-orange-600 via-red-600 to-orange-700">
+                    5BHK villa's in
+                    {/* <span className="text-5xl block text-transparent bg-clip-text bg-gradient-to-r from-orange-600 via-red-600 to-orange-700">
                       starting from Rs. 5999/- per sqft.
+                    </span> */}
+                    <span className="text-5xl block text-transparent bg-clip-text bg-gradient-to-r from-orange-600 via-red-600 to-orange-700">
+                      sarjapura
                     </span>
                   </h1>
                   <div className="w-16 sm:w-20 lg:w-24 h-1 bg-gradient-to-r from-orange-600 to-red-600 rounded-full"></div>
@@ -470,6 +472,21 @@ export default function LandingPage() {
                       )}
                     </div>
                   </div>
+                  <a
+                    href="https://youtu.be/OaUVX9GzMhM"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-[610px]"
+                  >
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      className="border-2 border-red-300 text-red-700 hover:bg-red-50 text-sm sm:text-base lg:text-lg px-6 sm:px-8 lg:px-10 py-4 sm:py-5 lg:py-6 bg-white/80 backdrop-blur-xl rounded-xl sm:rounded-2xl font-semibold group w-full"
+                    >
+                      <Play className="h-4 w-4 sm:h-5 sm:w-5 mr-2 sm:mr-3 group-hover:scale-110 transition-transform" />
+                      Explore Nyra Sunterra
+                    </Button>
+                  </a>
                   <Button
                     onClick={() => setShowBrochurePopup(true)}
                     size="lg"
@@ -624,20 +641,20 @@ export default function LandingPage() {
           </div>
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div className="space-y-6 sm:space-y-8">
-              <div className="grid grid-cols-3 gap-3 sm:gap-4">
+              <div className="grid grid-cols-2 gap-2 sm:gap-4">
                 {[
-                  { name: "Ground Floor", sqft: "1,600", active: 0 },
-                  { name: "First Floor", sqft: "1,400", active: 1 },
+                  { name: "Ground Living + Bedroom", sqft: "1,600", active: 0 },
+                  { name: "First floor Living + 2 Bedrooms", sqft: "1,400", active: 1 },
+                  { name: "Third floor Living + 1 Bedrooms + Cineplex theatre", sqft: "1,800", active: 1 },
                   { name: "Terrace", sqft: "200", active: 2 },
                 ].map((plan, index) => (
                   <button
                     key={index}
                     onClick={() => setActiveFloorPlan(index)}
-                    className={`p-4 sm:p-6 rounded-2xl sm:rounded-3xl text-center transition-all duration-300 ${
-                      activeFloorPlan === index
+                    className={`p-4 sm:p-6 rounded-2xl sm:rounded-3xl text-center transition-all duration-300 ${activeFloorPlan === index
                         ? "bg-gradient-to-r from-orange-600 to-red-600 text-white shadow-2xl scale-105"
                         : "bg-white text-slate-700 hover:bg-slate-50 shadow-lg"
-                    }`}
+                      }`}
                   >
                     <div className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">{plan.name}</div>
                     <div className="text-xs sm:text-sm opacity-80">{plan.sqft} sq.ft</div>
@@ -703,6 +720,8 @@ export default function LandingPage() {
       <section id="features" className="py-12 sm:py-16 lg:py-20 bg-white relative">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#f1f5f9_1px,transparent_1px),linear-gradient(to_bottom,#f1f5f9_1px,transparent_1px)] bg-[size:6rem_4rem] opacity-30"></div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+
+          {/* ✅ Section Header */}
           <div className="text-center mb-16 sm:mb-20 lg:mb-24">
             <Badge className="bg-slate-100 text-slate-700 border border-slate-200 mb-6 sm:mb-8 px-4 sm:px-6 py-2 sm:py-3 rounded-full font-medium">
               Premium Features
@@ -719,6 +738,53 @@ export default function LandingPage() {
               living experience to unprecedented heights.
             </p>
           </div>
+
+          {/* ✅ Project-Level Highlights (different from inner villa features) */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-10 mb-20">
+            {[
+              {
+                title: "SBI approved project",
+                description:
+                  "This project is officially approved by the State Bank of India, ensuring trust, transparency, and hassle-free home loan processing with faster approvals and attractive interest rates.",
+                icon: IndianRupee,
+              },
+              {
+                title: "Easy Home Loan Approvals",
+                description:
+                  "Get hassle-free approvals with partnered banks and financial institutions, making ownership simple and stress-free.",
+                icon: Shield,
+              },
+              {
+                title: "Prime Location – Sarjapura Growth Corridor",
+                description:
+                  "Located in the rapidly developing Sarjapura corridor with excellent connectivity and high appreciation potential.",
+                icon: Star,
+              },
+              {
+                title: "Gated Community with Modern Amenities",
+                description:
+                  "A secure and well-planned gated community featuring landscaped gardens, jogging tracks, and world-class amenities.",
+                icon: TreePine,
+              },
+            ].map((highlight, index) => (
+              <div
+                key={index}
+                className="p-6 sm:p-8 lg:p-10 rounded-2xl sm:rounded-3xl border border-slate-200 bg-white shadow-sm hover:shadow-lg transition-all duration-500"
+              >
+                <div className="mb-6 sm:mb-8">
+                  <highlight.icon className="h-8 w-8 sm:h-10 sm:w-10 text-orange-600" />
+                </div>
+                <h3 className="text-xl sm:text-2xl font-semibold text-slate-900 mb-4">
+                  {highlight.title}
+                </h3>
+                <p className="text-slate-600 font-light leading-relaxed">
+                  {highlight.description}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* ✅ Inner Property Features (original six) */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-10">
             {[
               {
@@ -812,6 +878,7 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
 
       {/* Enhanced Amenities Section */}
       <section id="amenities" className="py-12 sm:py-16 lg:py-20 bg-white relative">
@@ -1084,7 +1151,7 @@ export default function LandingPage() {
                     icon: Mail,
                     title: "Email",
                     subtitle: "Get detailed information and brochures",
-                    details: ["info@nyrasunterra.com", "sales@nyrasunterra.com"],
+                    details: ["info@nyrasunterra.in", "sales@nyrasunterra.com"],
                     color: "blue",
                     bgColor: "blue-50",
                   },

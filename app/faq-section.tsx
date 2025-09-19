@@ -18,7 +18,7 @@ export default function FAQSection() {
     {
       question: "How much can I save on electricity bills with solar power?",
       answer:
-        "With our comprehensive solar power system, residents typically save ₹15,000-25,000 per month on electricity bills. Over 10 years, this translates to savings of ₹18-30 lakhs, making it a smart long-term investment.",
+        "With our comprehensive solar power system, residents typically save ₹3000-4000 per month on electricity bills. Over 10 years, this translates to savings of ₹18-30 lakhs, making it a smart long-term investment.",
     },
     {
       question: "What is the payment schedule and financing options available?",
@@ -28,7 +28,7 @@ export default function FAQSection() {
     {
       question: "Is the project RERA approved and what are the possession timelines?",
       answer:
-        "Yes, NYRA SUNTERRA is fully RERA approved (Registration: PRM/KA/RERA/1251/308/PR110124/007750). The project is scheduled for possession by December 2025, with construction progressing as per timeline.",
+        "Yes, NYRA SUNTERRA is fully RERA approved (Registration: PRM/KA/RERA/1251/308/PR110124/007750). The project is scheduled for possession by December 2026, with construction progressing as per timeline.",
     },
     {
       question: "What amenities are included in the project?",
@@ -48,7 +48,7 @@ export default function FAQSection() {
     {
       question: "What is included in the villa specifications?",
       answer:
-        "Each 4BHK villa includes Italian marble flooring, solid teak wood doors, modular kitchen, premium fixtures, solar water heater, smart home readiness, covered parking for 2 cars, and a private terrace garden.",
+        "Each 4BHK villa includes Italian marble flooring, solid teak wood doors, modular kitchen, premium fixtures, solar water heater, smart home readiness, One covered parking, and a private terrace garden.",
     },
     {
       question: "Can I customize the interiors of my villa?",
@@ -58,7 +58,7 @@ export default function FAQSection() {
     {
       question: "What is the maintenance cost and who manages it?",
       answer:
-        "The monthly maintenance is approximately ₹8-12 per sq.ft, covering common area maintenance, security, landscaping, and amenity upkeep. A professional facility management company will handle all maintenance services.",
+        "The monthly maintenance is approximately ₹3 per sq.ft, covering common area maintenance, security, landscaping, and amenity upkeep. A professional facility management company will handle all maintenance services.",
     },
   ]
 
