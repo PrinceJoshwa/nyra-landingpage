@@ -122,7 +122,9 @@ export default function ScheduleVisitForm() {
   }
 
   return (
-    <section className="py-12 bg-gray-50">
+    // <section className="py-12 bg-gray-50">
+    <section id="schedule-visit" className="py-12 bg-gray-50">
+
       <div className="max-w-4xl mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">Schedule A Site Visit</h2>

@@ -61,7 +61,10 @@ export default function LandingPage() {
   const [isSubmittingBrochure, setIsSubmittingBrochure] = useState(false)
   const [showBrochureSuccess, setShowBrochureSuccess] = useState(false)
   const [showContactSuccess, setShowContactSuccess] = useState(false)
+  const [showNyraVideo, setShowNyraVideo] = useState(false)
+  const [showSolarVideo, setShowSolarVideo] = useState(false)
   const { toast } = useToast()
+
 
   const [formData, setFormData] = useState({
     name: "",
@@ -407,8 +410,7 @@ export default function LandingPage() {
                   <div className="w-16 sm:w-20 lg:w-24 h-1 bg-gradient-to-r from-orange-600 to-red-600 rounded-full"></div>
                 </div>
                 <p className="text-base sm:text-lg lg:text-xl xl:text-2xl text-slate-600 leading-relaxed max-w-2xl font-light">
-                  Experience premium villa living with zero electricity bills. 58 exquisitely crafted 5BHK villas
-                  powered entirely by solar energy in Bangalore's most sought-after location.
+                  Own a luxurious villa at the price of an apartment in Sarjapur.Save big on electricity and experience lifestyle upgradation with gated community accommodating outstanding amenities.
                 </p>
                 <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-6">
                   {[
@@ -472,30 +474,66 @@ export default function LandingPage() {
                       )}
                     </div>
                   </div>
-                  <a
-                    href="https://youtu.be/OaUVX9GzMhM"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full sm:w-[610px]"
-                  >
+                  <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
                     <Button
+                      onClick={() => setShowBrochurePopup(true)}
                       size="lg"
                       variant="outline"
-                      className="border-2 border-red-300 text-red-700 hover:bg-red-50 text-sm sm:text-base lg:text-lg px-6 sm:px-8 lg:px-10 py-4 sm:py-5 lg:py-6 bg-white/80 backdrop-blur-xl rounded-xl sm:rounded-2xl font-semibold group w-full"
+                      className="border-2 border-orange-300 text-orange-700 hover:bg-orange-50 text-sm sm:text-base lg:text-lg px-6 sm:px-8 lg:px-10 py-4 sm:py-5 lg:py-6 bg-white/80 backdrop-blur-xl rounded-xl sm:rounded-2xl font-semibold group w-full sm:w-[280px]"
                     >
-                      <Play className="h-4 w-4 sm:h-5 sm:w-5 mr-2 sm:mr-3 group-hover:scale-110 transition-transform" />
-                      Explore Nyra Sunterra
+                      <Download className="h-4 w-4 sm:h-5 sm:w-5 mr-2 sm:mr-3 group-hover:scale-110 transition-transform" />
+                      Download Brochure
                     </Button>
-                  </a>
-                  <Button
-                    onClick={() => setShowBrochurePopup(true)}
-                    size="lg"
-                    variant="outline"
-                    className="border-2 border-orange-300 text-orange-700 hover:bg-orange-50 text-sm sm:text-base lg:text-lg px-6 sm:px-8 lg:px-10 py-4 sm:py-5 lg:py-6 bg-white/80 backdrop-blur-xl rounded-xl sm:rounded-2xl font-semibold group w-full sm:w-[610px]"
-                  >
-                    <Download className="h-4 w-4 sm:h-5 sm:w-5 mr-2 sm:mr-3 group-hover:scale-110 transition-transform" />
-                    Download Brochure
-                  </Button>
+
+                    <div>
+                      {!showSolarVideo ? (
+                        <Button
+                          size="lg"
+                          variant="outline"
+                          onClick={() => setShowSolarVideo(true)}
+                          className="border-2 border-red-300 text-red-700 hover:bg-red-50 text-sm sm:text-base lg:text-lg px-6 sm:px-8 lg:px-10 py-4 sm:py-5 lg:py-6 bg-white/80 backdrop-blur-xl rounded-xl sm:rounded-2xl font-semibold group w-full sm:w-[300px]"
+                        >
+                          <Play className="h-4 w-4 sm:h-5 sm:w-5 mr-2 sm:mr-3 group-hover:scale-110 transition-transform" />
+                          Solar Powered Villas
+                        </Button>
+                      ) : (
+                        <div className="w-full max-w-4xl mt-8 rounded-xl overflow-hidden shadow-xl aspect-video">
+                          <iframe
+                            src="https://www.youtube.com/embed/yukBi8X8CAU?autoplay=1&mute=1&loop=1&playlist=yukBi8X8CAU"
+                            title="Solar Powered Villas"
+                            frameBorder="0"
+                            allow="autoplay; encrypted-media"
+                            allowFullScreen
+                            className="w-full h-full"
+                          ></iframe>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    {!showNyraVideo ? (
+                      <Button
+                        size="lg"
+                        variant="outline"
+                        onClick={() => setShowNyraVideo(true)}
+                        className="border-2 border-red-300 text-red-700 hover:bg-red-50 text-sm sm:text-base lg:text-lg px-6 sm:px-8 lg:px-10 py-4 sm:py-5 lg:py-6 bg-white/80 backdrop-blur-xl rounded-xl sm:rounded-2xl font-semibold group w-full sm:w-[610px]"
+                      >
+                        <Play className="h-4 w-4 sm:h-5 sm:w-5 mr-2 sm:mr-3 group-hover:scale-110 transition-transform" />
+                        Explore Nyra Sunterra
+                      </Button>
+                    ) : (
+                      <div className="w-full max-w-4xl mt-8 rounded-xl overflow-hidden shadow-xl aspect-video">
+                        <iframe
+                          src="https://www.youtube.com/embed/OaUVX9GzMhM?autoplay=1&mute=1&loop=1&playlist=OaUVX9GzMhM"
+                          title="Nyra Sunterra Video"
+                          frameBorder="0"
+                          allow="autoplay; encrypted-media"
+                          allowFullScreen
+                          className="w-full h-full"
+                        ></iframe>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -645,19 +683,19 @@ export default function LandingPage() {
                 {[
                   { name: "Ground Living + Bedroom", sqft: "1,600", active: 0 },
                   { name: "First floor Living + 2 Bedrooms", sqft: "1,400", active: 1 },
-                  { name: "Third floor Living + 1 Bedrooms + Cineplex theatre", sqft: "1,800", active: 1 },
+                  { name: "Third floor Living + Bedroom + Cineplex theatre", sqft: "1,800", active: 1 },
                   { name: "Terrace", sqft: "200", active: 2 },
                 ].map((plan, index) => (
                   <button
                     key={index}
                     onClick={() => setActiveFloorPlan(index)}
                     className={`p-4 sm:p-6 rounded-2xl sm:rounded-3xl text-center transition-all duration-300 ${activeFloorPlan === index
-                        ? "bg-gradient-to-r from-orange-600 to-red-600 text-white shadow-2xl scale-105"
-                        : "bg-white text-slate-700 hover:bg-slate-50 shadow-lg"
+                      ? "bg-gradient-to-r from-orange-600 to-red-600 text-white shadow-2xl scale-105"
+                      : "bg-white text-slate-700 hover:bg-slate-50 shadow-lg"
                       }`}
                   >
                     <div className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">{plan.name}</div>
-                    <div className="text-xs sm:text-sm opacity-80">{plan.sqft} sq.ft</div>
+                    {/* <div className="text-xs sm:text-sm opacity-80">{plan.sqft} sq.ft</div> */}
                   </button>
                 ))}
               </div>
@@ -702,12 +740,17 @@ export default function LandingPage() {
               <div className="bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-slate-200">
                 <img src="/Nyra.jpg" alt="Floor Plan" className="w-full h-full object-contain" />
               </div>
-              <div className="absolute top-4 sm:top-6 right-2 sm:right-13 bg-white/95 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-4 sm:p-4 shadow-xl">
+              <div className="absolute top-4 sm:top-6 -right-0 sm:right-13 bg-white/95 backdrop-blur-xl rounded-2xl sm:rounded-2xl p-4 sm:p-2 shadow-xl">
                 <div className="text-center">
-                  <div className="text-sm sm:text-2xl font-bold text-orange-600 mb-1 sm:mb-2">₹8750/sqft.*</div>
-                  <div className="text-xs sm:text-sm text-slate-600 font-medium">Starting Price</div>
+                  <a
+                    href="#schedule-visit"
+                    className="block text-sm sm:text-lg font-bold text-orange-600 mb-1 sm:mb-2 hover:underline cursor-pointer"
+                  >
+                    Schedule Site Visit
+                  </a>
                 </div>
               </div>
+
             </div>
           </div>
         </div>

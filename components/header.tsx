@@ -193,11 +193,14 @@ export default function Header() {
             </div>
 
             {/* CTA Button */}
-            <Button className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white shadow-lg hover:shadow-xl px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold text-sm transition-all duration-300 hover:scale-105">
-              <span className="hidden sm:inline">Schedule Visit</span>
-              <span className="sm:hidden">Visit</span>
-              <ArrowUpRight className="h-4 w-4 ml-2 group-hover:rotate-45 transition-transform" />
-            </Button>
+            <a href="#schedule-visit">
+              <Button className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white shadow-lg hover:shadow-xl px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold text-sm transition-all duration-300 hover:scale-105">
+                <span className="hidden sm:inline">Schedule Visit</span>
+                <span className="sm:hidden">Visit</span>
+                <ArrowUpRight className="h-4 w-4 ml-2 group-hover:rotate-45 transition-transform" />
+              </Button>
+            </a>
+
 
             {/* Mobile Menu Button */}
             <button
