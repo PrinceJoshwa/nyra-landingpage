@@ -1733,7 +1733,7 @@ export default function LandingPage() {
                           disabled={isSendingOtp}
                           className="w-full h-12 flex items-center justify-center bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white font-semibold rounded-xl shadow-lg"
                         >
-                          {isSendingOtp ? (<><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Sending OTP...</>) : (<><MessageSquareQuote className="h-4 w-4 mr-2" /> Get OTP</>)}
+                          {isSendingOtp ? (<><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Sending OTP...</>) : (<><MessageSquareQuote className="h-4 w-4 mr-2" />Proceed</>)}
                         </Button>
                       ) : (
                         <Button
