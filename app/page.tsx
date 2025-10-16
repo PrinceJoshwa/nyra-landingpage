@@ -34,6 +34,7 @@
 //   Loader2,
 //   X,
 //   IndianRupee,
+//   MessageSquareQuote,
 // } from "lucide-react"
 // import Header from "@/components/header"
 // import Footer from "@/components/footer"
@@ -65,7 +66,6 @@
 //   const [showSolarVideo, setShowSolarVideo] = useState(false)
 //   const { toast } = useToast()
 
-
 //   const [formData, setFormData] = useState({
 //     name: "",
 //     email: "",
@@ -80,114 +80,137 @@
 //     contactNumber: "",
 //   })
 
-//   // Handle form input changes
+//   // --- States for Brochure OTP Flow ---
+//   const [otp, setOtp] = useState("")
+//   const [showOtpInput, setShowOtpInput] = useState(false) 
+//   const [isSendingOtp, setIsSendingOtp] = useState(false)
+//   const [otpError, setOtpError] = useState("")
+
 //   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 //     const { name, value } = e.target
-//     setFormData((prev) => ({
-//       ...prev,
-//       [name]: value,
-//     }))
+//     setFormData((prev) => ({ ...prev, [name]: value }))
 //   }
 
 //   const handleBrochureInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 //     const { name, value } = e.target
-//     setBrochureFormData((prev) => ({
-//       ...prev,
-//       [name]: value,
-//     }))
+//     setBrochureFormData((prev) => ({ ...prev, [name]: value }))
 //   }
 
-//   const handleBrochureFormSubmit = async (e: React.FormEvent) => {
+//   // FIXED: Step 1 - Call your OWN backend API route
+//   const handleSendOtp = async (e: React.FormEvent) => {
 //     e.preventDefault()
-//     setIsSubmittingBrochure(true)
+//     setOtpError("")
 
+//     if (brochureFormData.contactNumber.length < 10) {
+//       setOtpError("Please enter a valid 10-digit contact number.")
+//       return
+//     }
+
+//     setIsSendingOtp(true)
 //     try {
-//       if (!brochureFormData.name.trim() || !brochureFormData.email.trim() || !brochureFormData.contactNumber.trim()) {
-//         toast({
-//           title: "Error",
-//           description: "Please fill in all fields.",
-//           variant: "destructive",
-//           duration: 5000,
-//         })
-//         return
-//       }
-
-//       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-//       if (!emailRegex.test(brochureFormData.email)) {
-//         toast({
-//           title: "Error",
-//           description: "Please enter a valid email address.",
-//           variant: "destructive",
-//           duration: 5000,
-//         })
-//         return
-//       }
-
-//       if (brochureFormData.contactNumber.length < 10) {
-//         toast({
-//           title: "Error",
-//           description: "Please enter a valid contact number.",
-//           variant: "destructive",
-//           duration: 5000,
-//         })
-//         return
-//       }
-
-//       const formData = new FormData()
-//       formData.append("name", brochureFormData.name)
-//       formData.append("email", brochureFormData.email)
-//       formData.append("phone", brochureFormData.contactNumber)
-//       formData.append("source", "brochure-download")
-//       formData.append("message", "Brochure download request for luxury 5BHK villas")
-
-//       const response = await fetch("https://formspree.io/f/xblkepgl", {
-//         method: "POST",
-//         body: formData,
+//       const response = await fetch('/api/send-otp', {
+//         method: 'POST',
 //         headers: {
-//           Accept: "application/json",
+//           'Content-Type': 'application/json',
 //         },
+//         body: JSON.stringify({ contactNumber: brochureFormData.contactNumber }),
+//       });
+
+//       const data = await response.json();
+
+//       if (!response.ok) {
+//         throw new Error(data.message || 'Failed to send OTP.');
+//       }
+      
+//       // Store the OTP that the backend generated and sent back
+//       sessionStorage.setItem("brochure_otp", data.otp);
+
+//       toast({
+//         title: "OTP Sent!",
+//         description: "Please enter the OTP sent to your mobile number.",
+//         duration: 4000,
 //       })
+//       setShowOtpInput(true) // Reveal the rest of the form
+//     } catch (error) {
+//       const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred."
+//       setOtpError(errorMessage)
+//     } finally {
+//       setIsSendingOtp(false)
+//     }
+//   }
 
-//       if (response.ok) {
-//         setShowBrochureSuccess(true)
-//         setBrochureFormData({
-//           name: "",
-//           email: "",
-//           contactNumber: "",
+//   // Step 2: Verify OTP and submit the complete form (This function remains the same)
+//   const handleVerifyAndSubmit = async (e: React.FormEvent) => {
+//     e.preventDefault()
+//     setOtpError("")
+
+//     if (!brochureFormData.name || !brochureFormData.email || !otp) {
+//         setOtpError("Please fill in all fields.")
+//         return
+//     }
+
+//     setIsSubmittingBrochure(true)
+//     try {
+//       const savedOtp = sessionStorage.getItem("brochure_otp")
+
+//       if (otp === savedOtp) {
+//         const formData = new FormData()
+//         formData.append("name", brochureFormData.name)
+//         formData.append("email", brochureFormData.email)
+//         formData.append("phone", brochureFormData.contactNumber)
+//         formData.append("source", "brochure-download-verified")
+//         formData.append("message", "Brochure download request for luxury 5BHK villas (OTP Verified)")
+
+//         const response = await fetch("https://formspree.io/f/xblkepgl", {
+//           method: "POST",
+//           body: formData,
+//           headers: {
+//             Accept: "application/json",
+//           },
 //         })
 
-//         toast({
-//           title: "Success!",
-//           description: "Your brochure is downloading now. We'll contact you soon!",
-//           duration: 5000,
-//         })
-
-//         downloadBrochure()
-
-//         setTimeout(() => {
-//           setShowBrochurePopup(false)
-//           setShowBrochureSuccess(false)
-//         }, 3000)
+//         if (response.ok) {
+//           toast({
+//             title: "Success!",
+//             description: "Your brochure is downloading now.",
+//             duration: 4000,
+//           })
+//           downloadBrochure()
+//           setShowBrochureSuccess(true)
+//           setTimeout(() => closeBrochurePopup(), 5000)
+//         } else {
+//           throw new Error("Form submission failed after verification.")
+//         }
 //       } else {
-//         throw new Error("Form submission failed")
+//         throw new Error("Invalid OTP. Please try again.")
 //       }
 //     } catch (error) {
-//       console.error("Brochure form submission error:", error)
+//       const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred."
+//       setOtpError(errorMessage)
 //       toast({
 //         title: "Error",
-//         description: "Something went wrong. Please try again or call us directly.",
+//         description: errorMessage,
 //         variant: "destructive",
-//         duration: 5000,
+//         duration: 4000,
 //       })
 //     } finally {
 //       setIsSubmittingBrochure(false)
 //     }
 //   }
 
+//   const closeBrochurePopup = () => {
+//     setShowBrochurePopup(false)
+//     setShowBrochureSuccess(false)
+//     setShowOtpInput(false)
+//     setOtp("")
+//     setOtpError("")
+//     setBrochureFormData({ name: "", email: "", contactNumber: "" })
+//     sessionStorage.removeItem("brochure_otp")
+//   }
+  
 //   const handleFormSubmit = async (e: React.FormEvent) => {
 //     e.preventDefault()
 //     setIsSubmitting(true)
-
 //     try {
 //       if (!formData.name.trim() || !formData.email.trim() || !formData.phone.trim()) {
 //         toast({
@@ -198,7 +221,6 @@
 //         })
 //         return
 //       }
-
 //       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 //       if (!emailRegex.test(formData.email)) {
 //         toast({
@@ -209,7 +231,6 @@
 //         })
 //         return
 //       }
-
 //       if (formData.phone.length < 10) {
 //         toast({
 //           title: "Error",
@@ -219,7 +240,6 @@
 //         })
 //         return
 //       }
-
 //       const submitData = new FormData()
 //       submitData.append("name", formData.name)
 //       submitData.append("email", formData.email)
@@ -236,7 +256,6 @@
 //           Accept: "application/json",
 //         },
 //       })
-
 //       if (response.ok) {
 //         setShowContactSuccess(true)
 //         setFormData({
@@ -246,13 +265,11 @@
 //           visitDate: "",
 //           requirements: "",
 //         })
-
 //         toast({
 //           title: "Success!",
 //           description: "Your tour request has been submitted successfully. We'll contact you soon!",
 //           duration: 5000,
 //         })
-
 //         setTimeout(() => {
 //           setShowContactSuccess(false)
 //         }, 5000)
@@ -275,7 +292,7 @@
 //   return (
 //     <div className="min-h-screen bg-white">
 //       <Header />
-
+      
 //       {showBrochurePopup && (
 //         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
 //           <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
@@ -283,10 +300,7 @@
 //               <div className="flex justify-between items-center mb-6">
 //                 <h3 className="text-2xl font-bold text-slate-900">Download Brochure</h3>
 //                 <button
-//                   onClick={() => {
-//                     setShowBrochurePopup(false)
-//                     setShowBrochureSuccess(false)
-//                   }}
+//                   onClick={closeBrochurePopup}
 //                   className="p-2 hover:bg-slate-100 rounded-full transition-colors"
 //                 >
 //                   <X className="h-5 w-5 text-slate-500" />
@@ -318,57 +332,74 @@
 //                   </div>
 
 //                   <div className="text-center">
-//                     <h5 className="text-lg font-semibold text-slate-900 mb-4">Get in touch</h5>
-//                     <form onSubmit={handleBrochureFormSubmit} className="space-y-4">
-//                       <div>
-//                         <Input
-//                           name="name"
-//                           placeholder="Full Name"
-//                           value={brochureFormData.name}
-//                           onChange={handleBrochureInputChange}
-//                           required
-//                           className="h-12 border-slate-200 focus:border-orange-500 focus:ring-orange-500 rounded-xl"
-//                         />
-//                       </div>
-//                       <div>
-//                         <Input
-//                           type="email"
-//                           name="email"
-//                           placeholder="Email Address"
-//                           value={brochureFormData.email}
-//                           onChange={handleBrochureInputChange}
-//                           required
-//                           className="h-12 border-slate-200 focus:border-orange-500 focus:ring-orange-500 rounded-xl"
-//                         />
-//                       </div>
-//                       <div>
-//                         <Input
-//                           type="tel"
-//                           name="contactNumber"
-//                           placeholder="Contact Number"
-//                           value={brochureFormData.contactNumber}
-//                           onChange={handleBrochureInputChange}
-//                           required
-//                           className="h-12 border-slate-200 focus:border-orange-500 focus:ring-orange-500 rounded-xl"
-//                         />
-//                       </div>
-//                       <Button
-//                         type="submit"
-//                         disabled={isSubmittingBrochure}
-//                         className="w-full h-12 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white font-semibold rounded-xl shadow-lg"
-//                       >
-//                         {isSubmittingBrochure ? (
-//                           <>
-//                             <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-//                             Submitting...
-//                           </>
-//                         ) : (
-//                           <>
-//                             <Download className="h-4 w-4 mr-2" />
-//                             Download Brochure
-//                           </>
-//                         )}
-//                       </Button>
+//                     <h5 className="text-lg font-semibold text-slate-900 mb-4">
+//                        {showOtpInput ? `Verify to download` : 'First, enter your contact number'}
+//                     </h5>
+                    
+//                     <form onSubmit={showOtpInput ? handleVerifyAndSubmit : handleSendOtp} className="space-y-4">
+//                       <Input
+//                         type="tel"
+//                         name="contactNumber"
+//                         placeholder="Contact Number"
+//                         value={brochureFormData.contactNumber}
+//                         onChange={handleBrochureInputChange}
+//                         required
+//                         disabled={showOtpInput}
+//                         className="h-12 border-slate-200 focus:border-orange-500 focus:ring-orange-500 rounded-xl"
+//                       />
+                      
+//                       {showOtpInput && (
+//                         <>
+//                           <Input
+//                             name="name"
+//                             placeholder="Full Name"
+//                             value={brochureFormData.name}
+//                             onChange={handleBrochureInputChange}
+//                             required
+//                             className="h-12 border-slate-200 focus:border-orange-500 focus:ring-orange-500 rounded-xl"
+//                           />
+//                           <Input
+//                             type="email"
+//                             name="email"
+//                             placeholder="Email Address"
+//                             value={brochureFormData.email}
+//                             onChange={handleBrochureInputChange}
+//                             required
+//                             className="h-12 border-slate-200 focus:border-orange-500 focus:ring-orange-500 rounded-xl"
+//                           />
+//                           <Input
+//                             type="text"
+//                             name="otp"
+//                             placeholder="Enter 6-Digit OTP"
+//                             value={otp}
+//                             onChange={(e) => setOtp(e.target.value)}
+//                             required
+//                             maxLength={6}
+//                             inputMode="numeric"
+//                             className="h-12 text-center tracking-widest font-bold text-lg border-slate-200 focus:border-green-500 focus:ring-green-500 rounded-xl"
+//                           />
+//                         </>
+//                       )}
+                      
+//                       {!showOtpInput ? (
+//                          <Button
+//                           type="submit"
+//                           disabled={isSendingOtp}
+//                           className="w-full h-12 flex items-center justify-center bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white font-semibold rounded-xl shadow-lg"
+//                         >
+//                           {isSendingOtp ? (<><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Sending OTP...</>) : (<><MessageSquareQuote className="h-4 w-4 mr-2" />Proceed</>)}
+//                         </Button>
+//                       ) : (
+//                         <Button
+//                           type="submit"
+//                           disabled={isSubmittingBrochure}
+//                           className="w-full h-12 flex items-center justify-center bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold rounded-xl shadow-lg"
+//                         >
+//                           {isSubmittingBrochure ? (<><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Verifying...</>) : (<><Download className="h-4 w-4 mr-2" /> Verify & Download</>)}
+//                         </Button>
+//                       )}
+
+//                       {otpError && <p className="text-sm text-red-600 mt-2">{otpError}</p>}
 //                     </form>
 //                   </div>
 //                 </div>
@@ -378,7 +409,7 @@
 //         </div>
 //       )}
 
-//       {/* Premium Hero Section */}
+//       {/* REMAINDER OF YOUR PAGE CODE (UNCHANGED) */}
 //       <section
 //         id="overview"
 //         className="pt-20 sm:pt-24 lg:pt-28 pb-12 sm:pb-16 lg:pb-20 bg-gradient-to-br from-orange-50 via-white to-red-50 relative overflow-hidden"
@@ -400,9 +431,6 @@
 //                 <div className="space-y-4 sm:space-y-6">
 //                   <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-slate-900 leading-[0.9] tracking-tight">
 //                     5BHK villa's in
-//                     {/* <span className="text-5xl block text-transparent bg-clip-text bg-gradient-to-r from-orange-600 via-red-600 to-orange-700">
-//                       starting from Rs. 5999/- per sqft.
-//                     </span> */}
 //                     <span className="text-5xl block text-transparent bg-clip-text bg-gradient-to-r from-orange-600 via-red-600 to-orange-700">
 //                       sarjapura
 //                     </span>
@@ -417,7 +445,6 @@
 //                     { number: "58", label: "Premium Villas", icon: Home, color: "orange" },
 //                     { number: "3200", label: "Build up Area", icon: Building, color: "blue" },
 //                     { number: "5", label: "BHK Luxury", icon: Award, color: "purple" },
-//                     // { number: "15", label: "Min to Metro", icon: MapPin, color: "red" },
 //                   ].map((stat, index) => (
 //                     <div
 //                       key={index}
@@ -444,14 +471,6 @@
 //                       <Phone className="h-4 w-4 sm:h-5 sm:w-5 mr-2 sm:mr-3 group-hover:rotate-12 transition-transform" />
 //                       Call Now - Get Best Price
 //                     </Button>
-//                     {/* <Button
-//                       size="lg"
-//                       variant="outline"
-//                       className="border-2 border-orange-300 text-orange-700 hover:bg-orange-50 text-sm sm:text-base lg:text-lg px-6 sm:px-8 lg:px-10 py-4 sm:py-5 lg:py-6 bg-white/80 backdrop-blur-xl rounded-xl sm:rounded-2xl font-semibold group"
-//                     >
-//                       <Play className="h-4 w-4 sm:h-5 sm:w-5 mr-2 sm:mr-3 group-hover:scale-110 transition-transform" />
-//                       Watch Virtual Tour
-//                     </Button> */}
 //                     <div>
 //                       {!showVideo ? (
 //                         <Button
@@ -465,7 +484,6 @@
 //                         </Button>
 //                       ) : (
 //                         <video
-//                           // src="/virtual-tour.mp4"
 //                           src="https://res.cloudinary.com/dsj3kcbf4/video/upload/v1752829080/virtual-tour_esxewp.mp4"
 //                           controls
 //                           autoPlay
@@ -651,10 +669,8 @@
 //         </div>
 //       </section>
 
-//       {/* About Us Section */}
 //       <AboutUsSection />
 
-//       {/* Floor Plans Section */}
 //       <section
 //         id="floor-plans"
 //         className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-slate-50 to-slate-100 relative"
@@ -695,7 +711,6 @@
 //                       }`}
 //                   >
 //                     <div className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">{plan.name}</div>
-//                     {/* <div className="text-xs sm:text-sm opacity-80">{plan.sqft} sq.ft</div> */}
 //                   </button>
 //                 ))}
 //               </div>
@@ -756,15 +771,10 @@
 //         </div>
 //       </section>
 
-//       {/* Enhanced Pricing Section */}
-//       {/* <EnhancedPricingSection /> */}
-
-//       {/* Enhanced Features Section */}
 //       <section id="features" className="py-12 sm:py-16 lg:py-20 bg-white relative">
 //         <div className="absolute inset-0 bg-[linear-gradient(to_right,#f1f5f9_1px,transparent_1px),linear-gradient(to_bottom,#f1f5f9_1px,transparent_1px)] bg-[size:6rem_4rem] opacity-30"></div>
 //         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
 
-//           {/* ✅ Section Header */}
 //           <div className="text-center mb-16 sm:mb-20 lg:mb-24">
 //             <Badge className="bg-slate-100 text-slate-700 border border-slate-200 mb-6 sm:mb-8 px-4 sm:px-6 py-2 sm:py-3 rounded-full font-medium">
 //               Premium Features
@@ -782,7 +792,6 @@
 //             </p>
 //           </div>
 
-//           {/* ✅ Project-Level Highlights (different from inner villa features) */}
 //           <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-10 mb-20">
 //             {[
 //               {
@@ -827,7 +836,6 @@
 //             ))}
 //           </div>
 
-//           {/* ✅ Inner Property Features (original six) */}
 //           <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-10">
 //             {[
 //               {
@@ -922,8 +930,6 @@
 //         </div>
 //       </section>
 
-
-//       {/* Enhanced Amenities Section */}
 //       <section id="amenities" className="py-12 sm:py-16 lg:py-20 bg-white relative">
 //         <div className="absolute inset-0 bg-[linear-gradient(to_right,#f8fafc_1px,transparent_1px),linear-gradient(to_bottom,#f8fafc_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-40"></div>
 //         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
@@ -1023,13 +1029,10 @@
 //         </div>
 //       </section>
 
-//       {/* Gallery Section */}
 //       <GallerySection />
 
-//       {/* FAQ Section */}
 //       <FAQSection />
 
-//       {/* Enhanced Location with Interactive Map */}
 //       <section id="location" className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-orange-50 to-red-50 relative">
 //         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(251,146,60,0.1),transparent_50%)]"></div>
 //         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
@@ -1161,7 +1164,6 @@
 //         </div>
 //       </section>
 
-//       {/* Enhanced Contact Section */}
 //       <section id="contact" className="py-12 sm:py-16 lg:py-20 bg-white relative">
 //         <div className="absolute inset-0 bg-[linear-gradient(to_right,#f1f5f9_1px,transparent_1px),linear-gradient(to_bottom,#f1f5f9_1px,transparent_1px)] bg-[size:6rem_4rem] opacity-30"></div>
 //         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
@@ -1408,7 +1410,6 @@ export default function LandingPage() {
   const [isSubmittingBrochure, setIsSubmittingBrochure] = useState(false)
   const [showBrochureSuccess, setShowBrochureSuccess] = useState(false)
   const [showContactSuccess, setShowContactSuccess] = useState(false)
-  const [showNyraVideo, setShowNyraVideo] = useState(false)
   const [showSolarVideo, setShowSolarVideo] = useState(false)
   const { toast } = useToast()
 
@@ -1428,7 +1429,7 @@ export default function LandingPage() {
 
   // --- States for Brochure OTP Flow ---
   const [otp, setOtp] = useState("")
-  const [showOtpInput, setShowOtpInput] = useState(false) 
+  const [showOtpInput, setShowOtpInput] = useState(false)
   const [isSendingOtp, setIsSendingOtp] = useState(false)
   const [otpError, setOtpError] = useState("")
 
@@ -1454,22 +1455,22 @@ export default function LandingPage() {
 
     setIsSendingOtp(true)
     try {
-      const response = await fetch('/api/send-otp', {
-        method: 'POST',
+      const response = await fetch("/api/send-otp", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ contactNumber: brochureFormData.contactNumber }),
-      });
+      })
 
-      const data = await response.json();
+      const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to send OTP.');
+        throw new Error(data.message || "Failed to send OTP.")
       }
-      
+
       // Store the OTP that the backend generated and sent back
-      sessionStorage.setItem("brochure_otp", data.otp);
+      sessionStorage.setItem("brochure_otp", data.otp)
 
       toast({
         title: "OTP Sent!",
@@ -1491,8 +1492,8 @@ export default function LandingPage() {
     setOtpError("")
 
     if (!brochureFormData.name || !brochureFormData.email || !otp) {
-        setOtpError("Please fill in all fields.")
-        return
+      setOtpError("Please fill in all fields.")
+      return
     }
 
     setIsSubmittingBrochure(true)
@@ -1553,7 +1554,7 @@ export default function LandingPage() {
     setBrochureFormData({ name: "", email: "", contactNumber: "" })
     sessionStorage.removeItem("brochure_otp")
   }
-  
+
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
@@ -1638,7 +1639,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      
+
       {showBrochurePopup && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
@@ -1679,9 +1680,9 @@ export default function LandingPage() {
 
                   <div className="text-center">
                     <h5 className="text-lg font-semibold text-slate-900 mb-4">
-                       {showOtpInput ? `Verify to download` : 'First, enter your contact number'}
+                      {showOtpInput ? `Verify to download` : "First, enter your contact number"}
                     </h5>
-                    
+
                     <form onSubmit={showOtpInput ? handleVerifyAndSubmit : handleSendOtp} className="space-y-4">
                       <Input
                         type="tel"
@@ -1693,7 +1694,7 @@ export default function LandingPage() {
                         disabled={showOtpInput}
                         className="h-12 border-slate-200 focus:border-orange-500 focus:ring-orange-500 rounded-xl"
                       />
-                      
+
                       {showOtpInput && (
                         <>
                           <Input
@@ -1726,14 +1727,23 @@ export default function LandingPage() {
                           />
                         </>
                       )}
-                      
+
                       {!showOtpInput ? (
-                         <Button
+                        <Button
                           type="submit"
                           disabled={isSendingOtp}
                           className="w-full h-12 flex items-center justify-center bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white font-semibold rounded-xl shadow-lg"
                         >
-                          {isSendingOtp ? (<><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Sending OTP...</>) : (<><MessageSquareQuote className="h-4 w-4 mr-2" />Proceed</>)}
+                          {isSendingOtp ? (
+                            <>
+                              <Loader2 className="h-4 w-4 mr-2 animate-spin" /> Sending OTP...
+                            </>
+                          ) : (
+                            <>
+                              <MessageSquareQuote className="h-4 w-4 mr-2" />
+                              Proceed
+                            </>
+                          )}
                         </Button>
                       ) : (
                         <Button
@@ -1741,7 +1751,15 @@ export default function LandingPage() {
                           disabled={isSubmittingBrochure}
                           className="w-full h-12 flex items-center justify-center bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold rounded-xl shadow-lg"
                         >
-                          {isSubmittingBrochure ? (<><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Verifying...</>) : (<><Download className="h-4 w-4 mr-2" /> Verify & Download</>)}
+                          {isSubmittingBrochure ? (
+                            <>
+                              <Loader2 className="h-4 w-4 mr-2 animate-spin" /> Verifying...
+                            </>
+                          ) : (
+                            <>
+                              <Download className="h-4 w-4 mr-2" /> Verify & Download
+                            </>
+                          )}
                         </Button>
                       )}
 
@@ -1784,7 +1802,8 @@ export default function LandingPage() {
                   <div className="w-16 sm:w-20 lg:w-24 h-1 bg-gradient-to-r from-orange-600 to-red-600 rounded-full"></div>
                 </div>
                 <p className="text-base sm:text-lg lg:text-xl xl:text-2xl text-slate-600 leading-relaxed max-w-2xl font-light">
-                  Own a luxurious villa at the price of an apartment in Sarjapur.Save big on electricity and experience lifestyle upgradation with gated community accommodating outstanding amenities.
+                  Own a luxurious villa at the price of an apartment in Sarjapur.Save big on electricity and experience
+                  lifestyle upgradation with gated community accommodating outstanding amenities.
                 </p>
                 <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-6">
                   {[
@@ -1874,29 +1893,16 @@ export default function LandingPage() {
                       )}
                     </div>
                   </div>
-                  <div>
-                    {!showNyraVideo ? (
-                      <Button
-                        size="lg"
-                        variant="outline"
-                        onClick={() => setShowNyraVideo(true)}
-                        className="border-2 border-red-300 text-red-700 hover:bg-red-50 text-sm sm:text-base lg:text-lg px-6 sm:px-8 lg:px-10 py-4 sm:py-5 lg:py-6 bg-white/80 backdrop-blur-xl rounded-xl sm:rounded-2xl font-semibold group w-full sm:w-[610px]"
-                      >
-                        <Play className="h-4 w-4 sm:h-5 sm:w-5 mr-2 sm:mr-3 group-hover:scale-110 transition-transform" />
-                        Explore Nyra Sunterra
-                      </Button>
-                    ) : (
-                      <div className="w-full max-w-4xl mt-8 rounded-xl overflow-hidden shadow-xl aspect-video">
-                        <iframe
-                          src="https://www.youtube.com/embed/OaUVX9GzMhM?autoplay=1&mute=1&loop=1&playlist=OaUVX9GzMhM"
-                          title="Nyra Sunterra Video"
-                          frameBorder="0"
-                          allow="autoplay; encrypted-media"
-                          allowFullScreen
-                          className="w-full h-full"
-                        ></iframe>
-                      </div>
-                    )}
+                  {/* <div className="w-full sm:w-[610px] rounded-xl overflow-hidden shadow-xl aspect-video"> */}
+                  <div className="w-full max-w-4xl mt-8 rounded-xl overflow-hidden shadow-xl aspect-video">
+                    <iframe
+                      src="https://www.youtube.com/embed/OaUVX9GzMhM?autoplay=1&mute=1&loop=1&playlist=OaUVX9GzMhM&controls=0"
+                      title="Nyra Sunterra Video"
+                      frameBorder="0"
+                      allow="autoplay; encrypted-media"
+                      allowFullScreen
+                      className="w-full h-full"
+                    ></iframe>
                   </div>
                 </div>
               </div>
@@ -1909,7 +1915,9 @@ export default function LandingPage() {
                       <div className="p-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl border border-green-200">
                         <CheckCircle2 className="h-16 w-16 text-green-600 mx-auto mb-4" />
                         <h4 className="text-2xl font-bold text-green-800 mb-2">Thank You!</h4>
-                        <p className="text-green-700 mb-4">Your site visit request has been submitted successfully!</p>
+                        <p className="text-green-700 mb-4">
+                          Your site visit request has been submitted successfully!
+                        </p>
                         <p className="text-sm text-green-600">
                           Our team will contact you within 24 hours to confirm your visit to our luxury 5BHK villas.
                         </p>
@@ -2051,10 +2059,11 @@ export default function LandingPage() {
                   <button
                     key={index}
                     onClick={() => setActiveFloorPlan(index)}
-                    className={`p-4 sm:p-6 rounded-2xl sm:rounded-3xl text-center transition-all duration-300 ${activeFloorPlan === index
-                      ? "bg-gradient-to-r from-orange-600 to-red-600 text-white shadow-2xl scale-105"
-                      : "bg-white text-slate-700 hover:bg-slate-50 shadow-lg"
-                      }`}
+                    className={`p-4 sm:p-6 rounded-2xl sm:rounded-3xl text-center transition-all duration-300 ${
+                      activeFloorPlan === index
+                        ? "bg-gradient-to-r from-orange-600 to-red-600 text-white shadow-2xl scale-105"
+                        : "bg-white text-slate-700 hover:bg-slate-50 shadow-lg"
+                    }`}
                   >
                     <div className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">{plan.name}</div>
                   </button>
@@ -2111,7 +2120,6 @@ export default function LandingPage() {
                   </a>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
@@ -2120,7 +2128,6 @@ export default function LandingPage() {
       <section id="features" className="py-12 sm:py-16 lg:py-20 bg-white relative">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#f1f5f9_1px,transparent_1px),linear-gradient(to_bottom,#f1f5f9_1px,transparent_1px)] bg-[size:6rem_4rem] opacity-30"></div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
-
           <div className="text-center mb-16 sm:mb-20 lg:mb-24">
             <Badge className="bg-slate-100 text-slate-700 border border-slate-200 mb-6 sm:mb-8 px-4 sm:px-6 py-2 sm:py-3 rounded-full font-medium">
               Premium Features
@@ -2172,12 +2179,8 @@ export default function LandingPage() {
                 <div className="mb-6 sm:mb-8">
                   <highlight.icon className="h-8 w-8 sm:h-10 sm:w-10 text-orange-600" />
                 </div>
-                <h3 className="text-xl sm:text-2xl font-semibold text-slate-900 mb-4">
-                  {highlight.title}
-                </h3>
-                <p className="text-slate-600 font-light leading-relaxed">
-                  {highlight.description}
-                </p>
+                <h3 className="text-xl sm:text-2xl font-semibold text-slate-900 mb-4">{highlight.title}</h3>
+                <p className="text-slate-600 font-light leading-relaxed">{highlight.description}</p>
               </div>
             ))}
           </div>
@@ -2569,12 +2572,11 @@ export default function LandingPage() {
                       <h3 className="font-bold text-xl sm:text-2xl mb-2 text-slate-900 tracking-tight">
                         {contact.title}
                       </h3>
-                      <p className="text-slate-500 mb-3 sm:mb-4 font-medium text-sm sm:text-base">{contact.subtitle}</p>
+                      <p className="text-slate-500 mb-3 sm:mb-4 font-medium text-sm sm:text-base">
+                        {contact.subtitle}
+                      </p>
                       {contact.details.map((detail, detailIndex) => (
-                        <p
-                          key={detailIndex}
-                          className="text-slate-700 font-medium leading-relaxed text-sm sm:text-base"
-                        >
+                        <p key={detailIndex} className="text-slate-700 font-medium leading-relaxed text-sm sm:text-base">
                           {detail}
                         </p>
                       ))}
