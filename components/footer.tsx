@@ -62,16 +62,42 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Contact Info */}
-          <div>
-            <h4 className="font-bold text-lg sm:text-xl mb-6 sm:mb-8 tracking-tight text-orange-400">Contact Info</h4>
-            <div className="space-y-3 sm:space-y-4 text-slate-300 text-sm sm:text-base">
-              <div className="font-medium hover:text-orange-400 transition-colors">+91 7760 777 992</div>
-              <div className="font-medium hover:text-orange-400 transition-colors">+91 7090 407 090</div>
-              <div className="font-medium hover:text-orange-400 transition-colors">www.nyrasunterra.com</div>
-              <div className="font-medium hover:text-orange-400 transition-colors">info@nyrasunterra.com</div>
-            </div>
-          </div>
+{/* Contact Info */}
+<div>
+  <h4 className="font-bold text-lg sm:text-xl mb-6 sm:mb-8 tracking-tight text-orange-400">
+    Contact Info
+  </h4>
+
+  <div className="space-y-3 sm:space-y-4 text-slate-300 text-sm sm:text-base">
+    <a
+      href="tel:+917760777992"
+      className="block font-medium hover:text-orange-400 transition-colors"
+    >
+      +91 7760 777 992
+    </a>
+    <a
+      href="tel:+917090407090"
+      className="block font-medium hover:text-orange-400 transition-colors"
+    >
+      +91 7090 407 090
+    </a>
+    <a
+      href="https://www.nyrasunterra.com"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="block font-medium hover:text-orange-400 transition-colors"
+    >
+      www.nyrasunterra.com
+    </a>
+    <a
+      href="mailto:info@nyrasunterra.com"
+      className="block font-medium hover:text-orange-400 transition-colors"
+    >
+      info@nyrasunterra.com
+    </a>
+  </div>
+</div>
+
 
           {/* Legal & Compliance */}
           <div>

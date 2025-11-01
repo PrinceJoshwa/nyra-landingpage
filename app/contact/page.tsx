@@ -1004,68 +1004,100 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Information Cards */}
-      <section className="py-16 sm:py-20 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-3 gap-6 sm:gap-8 mb-16 sm:mb-20">
-            {[
-              {
-                icon: Phone,
-                title: "Call Us Directly",
-                subtitle: "Immediate assistance available",
-                details: ["+91 7760 777 992", "+91 7090 407 090"],
-                color: "orange",
-                bgColor: "orange-50",
-                action: "Call Now",
-              },
-              {
-                icon: Mail,
-                title: "Email Inquiries",
-                subtitle: "Detailed responses within 24 hours",
-                details: ["info@nyrasunterra.com", "sales@nyrasunterra.com"],
-                color: "blue",
-                bgColor: "blue-50",
-                action: "Send Email",
-              },
-              {
-                icon: MapPin,
-                title: "Visit Our Office",
-                subtitle: "Experience center & model villa",
-                details: ["BEML Cooperative Society Layout", "Sarjapur-Attibele Road, Bengaluru"],
-                color: "purple",
-                bgColor: "purple-50",
-                action: "Get Directions",
-              },
-            ].map((contact, index) => (
-              <Card
-                key={index}
-                className="border-0 shadow-xl bg-white rounded-2xl sm:rounded-3xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+<section className="py-16 sm:py-20 bg-white">
+  <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="grid md:grid-cols-3 gap-6 sm:gap-8 mb-16 sm:mb-20">
+      {[
+        {
+          icon: Phone,
+          title: "Call Us Directly",
+          subtitle: "Immediate assistance available",
+          details: [
+            { label: "+91 7760 777 992", href: "tel:+917760777992" },
+            { label: "+91 7090 407 090", href: "tel:+917090407090" },
+          ],
+          color: "orange",
+          bgColor: "orange-50",
+          action: "Call Now",
+          actionHref: "tel:+917760777992",
+        },
+        {
+          icon: Mail,
+          title: "Email Inquiries",
+          subtitle: "Detailed responses within 24 hours",
+          details: [
+            { label: "info@nyrasunterra.com", href: "mailto:info@nyrasunterra.com" },
+            { label: "sales@nyrasunterra.com", href: "mailto:sales@nyrasunterra.com" },
+          ],
+          color: "blue",
+          bgColor: "blue-50",
+          action: "Send Email",
+          actionHref: "mailto:info@nyrasunterra.com",
+        },
+        {
+          icon: MapPin,
+          title: "Visit Our Office",
+          subtitle: "Experience center & model villa",
+          details: [
+            {
+              label: "BEML Cooperative Society Layout",
+              href: "https://www.google.com/maps/place/BEML+Cooperative+Society+Layout,+Sarjapur-Attibele+Road,+Bengaluru",
+            },
+            {
+              label: "Sarjapur-Attibele Road, Bengaluru",
+              href: "https://www.google.com/maps/place/BEML+Cooperative+Society+Layout,+Sarjapur-Attibele+Road,+Bengaluru",
+            },
+          ],
+          color: "purple",
+          bgColor: "purple-50",
+          action: "Get Directions",
+          actionHref:
+            "https://www.google.com/maps/place/BEML+Cooperative+Society+Layout,+Sarjapur-Attibele+Road,+Bengaluru",
+        },
+      ].map((contact, index) => (
+        <Card
+          key={index}
+          className="border-0 shadow-xl bg-white rounded-2xl sm:rounded-3xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+        >
+          <CardContent className="p-6 sm:p-8 text-center">
+            <div
+              className={`p-4 sm:p-5 bg-${contact.bgColor} rounded-2xl sm:rounded-3xl mb-6 mx-auto w-fit shadow-lg`}
+            >
+              <contact.icon className={`h-8 w-8 sm:h-10 sm:w-10 text-${contact.color}-600`} />
+            </div>
+            <h3 className="font-bold text-xl sm:text-2xl mb-2 text-slate-900">{contact.title}</h3>
+            <p className="text-slate-500 mb-4 font-medium text-sm sm:text-base">{contact.subtitle}</p>
+
+            {/* Details */}
+            <div className="space-y-2 mb-6">
+              {contact.details.map((detail, detailIndex) => (
+                <a
+                  key={detailIndex}
+                  href={detail.href}
+                  target={contact.icon === MapPin ? "_blank" : "_self"}
+                  rel="noopener noreferrer"
+                  className="block text-slate-700 font-medium text-sm sm:text-base hover:text-orange-500 transition-colors"
+                >
+                  {detail.label}
+                </a>
+              ))}
+            </div>
+
+            {/* Action Button */}
+            <a href={contact.actionHref} target={contact.icon === MapPin ? "_blank" : "_self"} rel="noopener noreferrer">
+              <Button
+                className={`bg-${contact.color}-600 hover:bg-${contact.color}-700 text-white px-6 py-3 rounded-xl font-semibold`}
               >
-                <CardContent className="p-6 sm:p-8 text-center">
-                  <div
-                    className={`p-4 sm:p-5 bg-${contact.bgColor} rounded-2xl sm:rounded-3xl mb-6 mx-auto w-fit shadow-lg`}
-                  >
-                    <contact.icon className={`h-8 w-8 sm:h-10 sm:w-10 text-${contact.color}-600`} />
-                  </div>
-                  <h3 className="font-bold text-xl sm:text-2xl mb-2 text-slate-900">{contact.title}</h3>
-                  <p className="text-slate-500 mb-4 font-medium text-sm sm:text-base">{contact.subtitle}</p>
-                  <div className="space-y-2 mb-6">
-                    {contact.details.map((detail, detailIndex) => (
-                      <p key={detailIndex} className="text-slate-700 font-medium text-sm sm:text-base">
-                        {detail}
-                      </p>
-                    ))}
-                  </div>
-                  <Button
-                    className={`bg-${contact.color}-600 hover:bg-${contact.color}-700 text-white px-6 py-3 rounded-xl font-semibold`}
-                  >
-                    {contact.action}
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+                {contact.action}
+              </Button>
+            </a>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  </div>
+</section>
+
 
       {/* Contact Form Section */}
       <section className="py-16 sm:py-20 bg-gradient-to-br from-slate-50 to-slate-100">
