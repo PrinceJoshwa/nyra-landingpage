@@ -1489,6 +1489,7 @@ export default function LandingPage() {
   }
 
   // Step 2: Verify OTP and submit the complete form (This function remains the same)
+// Step 2: Verify OTP and submit the complete form
   const handleVerifyAndSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setOtpError("")
@@ -1521,14 +1522,20 @@ export default function LandingPage() {
         if (response.ok) {
           toast({
             title: "Success!",
-            description: "Your brochure is downloading now.",
-            duration: 4000,
+            description: "Your brochure is downloading. Redirecting...",
+            duration: 3000,
           })
-          // 👇 MODIFICATION: Update URL for tracking
-          router.push("?form_success=brochure_download", { scroll: false })
-          downloadBrochure()
-          setShowBrochureSuccess(true)
-          setTimeout(() => closeBrochurePopup(), 5000)
+          
+          downloadBrochure() // Start the download
+          
+          // --- MODIFICATION ---
+          // Redirect to the thank you page
+          router.push("/brochure-download/thankyou") 
+          // --- END MODIFICATION ---
+
+          // We no longer need setShowBrochureSuccess or the setTimeout
+          // as we are navigating away from the page.
+
         } else {
           throw new Error("Form submission failed after verification.")
         }
@@ -1559,10 +1566,11 @@ export default function LandingPage() {
     sessionStorage.removeItem("brochure_otp")
   }
 
-  const handleFormSubmit = async (e: React.FormEvent) => {
+const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
     try {
+      // (All your validation logic remains the same)
       if (!formData.name.trim() || !formData.email.trim() || !formData.phone.trim()) {
         toast({
           title: "Error",
@@ -1572,6 +1580,7 @@ export default function LandingPage() {
         })
         return
       }
+      // (Email regex validation remains the same)
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
       if (!emailRegex.test(formData.email)) {
         toast({
@@ -1582,6 +1591,7 @@ export default function LandingPage() {
         })
         return
       }
+      // (Phone length validation remains the same)
       if (formData.phone.length < 10) {
         toast({
           title: "Error",
@@ -1591,6 +1601,8 @@ export default function LandingPage() {
         })
         return
       }
+      
+      // (FormData creation remains the same)
       const submitData = new FormData()
       submitData.append("name", formData.name)
       submitData.append("email", formData.email)
@@ -1607,10 +1619,10 @@ export default function LandingPage() {
           Accept: "application/json",
         },
       })
+
       if (response.ok) {
-        // 👇 MODIFICATION: Update URL for tracking
-        router.push("?form_success=site_visit", { scroll: false })
-        setShowContactSuccess(true)
+        // --- MODIFICATION ---
+        // 1. Reset form (optional, but good practice)
         setFormData({
           name: "",
           email: "",
@@ -1618,14 +1630,21 @@ export default function LandingPage() {
           visitDate: "",
           requirements: "",
         })
+        
+        // 2. Show a toast (optional, but good practice)
         toast({
           title: "Success!",
-          description: "Your tour request has been submitted successfully. We'll contact you soon!",
-          duration: 5000,
+          description: "Your request has been submitted. Redirecting you...",
+          duration: 3000,
         })
-        setTimeout(() => {
-          setShowContactSuccess(false)
-        }, 5000)
+        
+        // 3. Redirect to the thank you page
+        router.push("/contact/thankyou")
+        // --- END MODIFICATION ---
+
+        // We no longer need setShowContactSuccess or its setTimeout
+        // as we are navigating away from the page.
+
       } else {
         throw new Error("Form submission failed")
       }

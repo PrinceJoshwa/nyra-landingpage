@@ -910,7 +910,7 @@ export default function ContactPage() {
     }))
   }
 
-  const handleFormSubmit = async (e: React.FormEvent) => {
+const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
 
@@ -921,7 +921,7 @@ export default function ContactPage() {
       formDataToSend.append("phone", formData.phone)
       formDataToSend.append("visitDate", formData.visitDate)
       formDataToSend.append("requirements", formData.requirements)
-      formDataToSend.append("inquiryType", formData.inquiryType)
+      formDataToSend.append("inquiryType", formData.inquiryType) // This value is now used below
       formDataToSend.append("source", "contact-page")
       formDataToSend.append("timestamp", new Date().toISOString())
 
@@ -934,27 +934,34 @@ export default function ContactPage() {
       })
 
       if (response.ok) {
-        // 👇 MODIFICATION: Update URL for tracking
-        router.push(`?form_success=${formData.inquiryType}`, { scroll: false })
-        setShowSuccess(true)
-        toast({
-          title: "Success!",
-          description: "Your inquiry has been submitted successfully. We'll contact you soon!",
-          duration: 5000,
-        })
+        
+        // --- MODIFICATION ---
 
+        // Get the selected inquiry type from the form state
+        const inquiryType = formData.inquiryType 
+
+        // 1. Reset the form
         setFormData({
           name: "",
           email: "",
           phone: "",
           visitDate: "",
           requirements: "",
-          inquiryType: "site-visit",
+          inquiryType: "site-visit", // Reset to default
         })
 
-        setTimeout(() => {
-          setShowSuccess(false)
-        }, 5000)
+        // 2. Show a toast
+        toast({
+          title: "Success!",
+          description: "Your inquiry has been submitted. Redirecting...",
+          duration: 3000, 
+        })
+
+        // 3. Redirect to the thank you page WITH the dynamic query parameter
+        router.push(`/contact_us/thankyou?inquiry=${inquiryType}`) // <-- THIS IS THE CHANGE
+        
+        // --- END MODIFICATION ---
+
       } else {
         throw new Error("Form submission failed")
       }
