@@ -124,13 +124,16 @@ export default function FAQSection() {
               <p className="text-slate-600 mb-6 sm:mb-8 text-sm sm:text-base">
                 Our expert consultants are here to help you with any additional queries
               </p>
-              <Button
-                size="lg"
-                className="bg-gradient-to-r from-orange-600 to-red-700 hover:from-orange-700 hover:to-red-800 px-8 sm:px-12 py-4 sm:py-6 rounded-xl sm:rounded-2xl text-base sm:text-lg font-semibold shadow-2xl"
-              >
-                <Phone className="h-5 w-5 mr-3" />
-                Speak with Expert
-              </Button>
+<Button
+  size="lg"
+  className="bg-gradient-to-r from-orange-600 to-red-700 hover:from-orange-700 hover:to-red-800 px-8 sm:px-12 py-4 sm:py-6 rounded-xl sm:rounded-2xl text-base sm:text-lg font-semibold shadow-2xl"
+  asChild
+>
+  <a href="tel:7760777992"> {/* <-- REPLACE THIS WITH THE PHONE NUMBER */}
+    <Phone className="h-5 w-5 mr-3" />
+    Speak with Expert
+  </a>
+</Button>
             </div>
           </div>
         </div>
