@@ -1639,7 +1639,7 @@ const handleFormSubmit = async (e: React.FormEvent) => {
         })
         
         // 3. Redirect to the thank you page
-        router.push("/contact/thankyou")
+        router.push("/contact_us/thankyou")
         // --- END MODIFICATION ---
 
         // We no longer need setShowContactSuccess or its setTimeout
